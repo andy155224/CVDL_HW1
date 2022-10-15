@@ -7,10 +7,16 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import os
 import sys
 
+from CameraCalibration import *
+
 class Ui_MainWindow(object):
+
+    def __init__(self):
+        self.cameraCalibration = CameraCalibration()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1022, 591)
@@ -19,9 +25,12 @@ class Ui_MainWindow(object):
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(20, 40, 231, 461))
         self.groupBox.setObjectName("groupBox")
-        self.pushButton = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton.setGeometry(QtCore.QRect(30, 80, 171, 51))
-        self.pushButton.setObjectName("pushButton")
+
+        self.loadFolder = QtWidgets.QPushButton(self.groupBox)          # LoadFolder
+        self.loadFolder.setGeometry(QtCore.QRect(30, 80, 171, 51))
+        self.loadFolder.setObjectName("loadFolder")
+        self.loadFolder.clicked.connect(self.LoadFolderClicked)
+
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_2.setGeometry(QtCore.QRect(30, 210, 171, 51))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -31,9 +40,12 @@ class Ui_MainWindow(object):
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(270, 40, 231, 461))
         self.groupBox_2.setObjectName("groupBox_2")
-        self.pushButton_4 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_4.setGeometry(QtCore.QRect(30, 40, 171, 51))
-        self.pushButton_4.setObjectName("pushButton_4")
+
+        self.findCorners = QtWidgets.QPushButton(self.groupBox_2)
+        self.findCorners.setGeometry(QtCore.QRect(30, 40, 171, 51))
+        self.findCorners.setObjectName("findCorners")
+        self.findCorners.clicked.connect(self.FindCornersClicked)
+
         self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_5.setGeometry(QtCore.QRect(30, 110, 171, 51))
         self.pushButton_5.setObjectName("pushButton_5")
@@ -104,11 +116,15 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "CVDL_HW1"))
         self.groupBox.setTitle(_translate("MainWindow", "Load Image"))
-        self.pushButton.setText(_translate("MainWindow", "Load Folder"))
+
+        self.loadFolder.setText(_translate("MainWindow", "Load Folder"))
+
         self.pushButton_2.setText(_translate("MainWindow", "Load Image_L"))
         self.pushButton_3.setText(_translate("MainWindow", "Load Image_R"))
         self.groupBox_2.setTitle(_translate("MainWindow", "1. Calibration"))
-        self.pushButton_4.setText(_translate("MainWindow", "1.1 Find Corners"))
+
+        self.findCorners.setText(_translate("MainWindow", "1.1 Find Corners"))
+
         self.pushButton_5.setText(_translate("MainWindow", "1.2 Find Intrinsic"))
         self.groupBox_3.setTitle(_translate("MainWindow", "1.3 Find Extrinsic"))
         self.pushButton_6.setText(_translate("MainWindow", "1.3 Find Extrinsic"))
@@ -135,10 +151,9 @@ class Ui_MainWindow(object):
         self.groupBox_6.setTitle(_translate("MainWindow", "3. Stereo Disparity Map"))
         self.pushButton_14.setText(_translate("MainWindow", "3.1 Stereo Disparity Map"))
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication([])
-    Form = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    def LoadFolderClicked(self):
+        folder_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Load folder", "./")
+        self.cameraCalibration.LoadFolder(folder_path)
+
+    def FindCornersClicked(self):
+        self.cameraCalibration.FindCorners()
