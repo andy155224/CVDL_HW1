@@ -7,6 +7,9 @@ class CameraCalibration():
     def __init__(self):
         self.folderPath = ''
         self.intrinsicMatrix = None
+        self.dist = None
+        self.rvecs = None
+        self.tvecs = None
         pass
     
     def LoadFolder(self, path):
@@ -14,6 +17,7 @@ class CameraCalibration():
 
     def FindCorners(self):
         dirs = os.listdir(self.folderPath)
+        dirs.sort(key=len)
         patternSize = (11,8)
 
         # termination criteria
@@ -50,14 +54,20 @@ class CameraCalibration():
             cv2.waitKey(500)
 
         cv2.destroyAllWindows()
-
         ret, self.intrinsicMatrix, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(objPoints, imgPoints, gray.shape[::-1], None, None)
     
     def FindIntrinsic(self):
         print('Intrinsic:')
         print(self.intrinsicMatrix)
 
+    def FindExtrinsic(self, currIndex):
+        R = cv2.Rodrigues(self.rvecs[currIndex])
+        print('Extrinsic:')
+        print(np.append(R[0], self.tvecs[currIndex], axis=1))
+
+
 
 # reference
 # 1.https://blog.csdn.net/u010128736/article/details/52875137
 # 2.https://docs.opencv.org/3.4/dc/dbb/tutorial_py_calibration.html
+# 3.https://stackoverflow.com/questions/55220229/extrinsic-matrix-computation-with-opencv

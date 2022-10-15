@@ -58,6 +58,7 @@ class Ui_MainWindow(object):
         self.findExtrinsic = QtWidgets.QPushButton(self.groupBox_3)
         self.findExtrinsic.setGeometry(QtCore.QRect(20, 70, 171, 51))
         self.findExtrinsic.setObjectName("findExtrinsic")
+        self.findExtrinsic.clicked.connect(self.FindExtrinsicClicked)
 
         self.comboBox = QtWidgets.QComboBox(self.groupBox_3)
         self.comboBox.setGeometry(QtCore.QRect(50, 30, 111, 31))
@@ -164,3 +165,6 @@ class Ui_MainWindow(object):
 
     def FindIntrinsicClicked(self):
         self.cameraCalibration.FindIntrinsic()
+
+    def FindExtrinsicClicked(self):
+        self.cameraCalibration.FindExtrinsic(self.comboBox.currentIndex())
