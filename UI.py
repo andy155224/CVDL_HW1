@@ -78,9 +78,12 @@ class Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
-        self.pushButton_7 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_7.setGeometry(QtCore.QRect(30, 330, 171, 51))
-        self.pushButton_7.setObjectName("pushButton_7")
+
+        self.findDistortion = QtWidgets.QPushButton(self.groupBox_2)
+        self.findDistortion.setGeometry(QtCore.QRect(30, 330, 171, 51))
+        self.findDistortion.setObjectName("findDistortion")
+        self.findDistortion.clicked.connect(self.FindDistortionClicked)
+
         self.pushButton_8 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_8.setGeometry(QtCore.QRect(30, 400, 171, 51))
         self.pushButton_8.setObjectName("pushButton_8")
@@ -121,15 +124,11 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "CVDL_HW1"))
         self.groupBox.setTitle(_translate("MainWindow", "Load Image"))
-
         self.loadFolder.setText(_translate("MainWindow", "Load Folder"))
-
         self.pushButton_2.setText(_translate("MainWindow", "Load Image_L"))
         self.pushButton_3.setText(_translate("MainWindow", "Load Image_R"))
         self.groupBox_2.setTitle(_translate("MainWindow", "1. Calibration"))
-
         self.findCorners.setText(_translate("MainWindow", "1.1 Find Corners"))
-
         self.findIntrinsic.setText(_translate("MainWindow", "1.2 Find Intrinsic"))
         self.groupBox_3.setTitle(_translate("MainWindow", "1.3 Find Extrinsic"))
         self.findExtrinsic.setText(_translate("MainWindow", "1.3 Find Extrinsic"))
@@ -148,7 +147,7 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(12, _translate("MainWindow", "13"))
         self.comboBox.setItemText(13, _translate("MainWindow", "14"))
         self.comboBox.setItemText(14, _translate("MainWindow", "15"))
-        self.pushButton_7.setText(_translate("MainWindow", "1.4 Find Distortion"))
+        self.findDistortion.setText(_translate("MainWindow", "1.4 Find Distortion"))
         self.pushButton_8.setText(_translate("MainWindow", "1.5 Show Result"))
         self.groupBox_4.setTitle(_translate("MainWindow", "2. Augmented Reality"))
         self.pushButton_12.setText(_translate("MainWindow", "2.1 Show Words on Board"))
@@ -168,3 +167,6 @@ class Ui_MainWindow(object):
 
     def FindExtrinsicClicked(self):
         self.cameraCalibration.FindExtrinsic(self.comboBox.currentIndex())
+
+    def FindDistortionClicked(self):
+        self.cameraCalibration.FindDistortion()

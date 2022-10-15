@@ -65,6 +65,10 @@ class CameraCalibration():
         print('Extrinsic:')
         print(np.append(R[0], self.tvecs[currIndex], axis=1))
 
+    def FindDistortion(self):
+        print('Distortion:')
+        print(self.dist)
+
 
 
 # reference
