@@ -6,11 +6,11 @@ class CameraCalibration():
 
     def __init__(self):
         self.folderPath = ''
+        self.intrinsicMatrix = None
         pass
     
     def LoadFolder(self, path):
         self.folderPath = path
-        print(self.folderPath)
 
     def FindCorners(self):
         dirs = os.listdir(self.folderPath)
@@ -32,7 +32,6 @@ class CameraCalibration():
 
         for fileName in dirs:
             img = cv2.imread(self.folderPath+'/'+fileName)
-            img = cv2.resize(img, (800,600), interpolation=cv2.INTER_AREA)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             ret, corners = cv2.findChessboardCorners(img, patternSize, None)
 
@@ -41,6 +40,7 @@ class CameraCalibration():
                 objPoints.append(objp)
                 imgPoints.append(corners)
                 cv2.drawChessboardCorners(img, patternSize, corners2, ret)    #draw corner point on the original image
+                img = cv2.resize(img, (800,600), interpolation=cv2.INTER_AREA)
                 result.append(img)
 
         for img in result:
@@ -51,11 +51,11 @@ class CameraCalibration():
 
         cv2.destroyAllWindows()
 
-        ret, self.mtx, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(objPoints, imgPoints, gray.shape[::-1], None, None)
+        ret, self.intrinsicMatrix, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(objPoints, imgPoints, gray.shape[::-1], None, None)
     
     def FindIntrinsic(self):
-        
-        pass
+        print('Intrinsic:')
+        print(self.intrinsicMatrix)
 
 
 # reference
