@@ -25,8 +25,10 @@ class CameraCalibration():
 
         
         # Arrays to store object points and image points from all the images.
-        objpoints = []  # 3d point in real world space
-        imgpoints = []  # 2d point in image plane
+        objPoints = []  # 3d point in real world space
+        imgPoints = []  # 2d point in image plane
+
+        result = []     # store the image result
 
         for fileName in dirs:
             img = cv2.imread(self.folderPath+'/'+fileName)
@@ -36,17 +38,24 @@ class CameraCalibration():
 
             if ret == True:
                 corners2 = cv2.cornerSubPix(gray, corners, (11,11), (-1,-1), criteria)
-                objpoints.append(objp)
-                imgpoints.append(corners)
+                objPoints.append(objp)
+                imgPoints.append(corners)
                 cv2.drawChessboardCorners(img, patternSize, corners2, ret)    #draw corner point on the original image
-                cv2.namedWindow('image', 0)
-                cv2.resizeWindow('image', 800, 600)
-                cv2.imshow('image', img)
-                cv2.waitKey(500)
+                result.append(img)
 
-            cv2.destroyAllWindows()
+        for img in result:
+            cv2.namedWindow('image', 0)
+            cv2.resizeWindow('image', 800, 600)
+            cv2.imshow('image', img)
+            cv2.waitKey(500)
 
-        ret, self.mtx, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+        cv2.destroyAllWindows()
+
+        ret, self.mtx, self.dist, self.rvecs, self.tvecs = cv2.calibrateCamera(objPoints, imgPoints, gray.shape[::-1], None, None)
+    
+    def FindIntrinsic(self):
+        
+        pass
 
 
 # reference

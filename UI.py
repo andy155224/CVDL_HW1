@@ -46,15 +46,19 @@ class Ui_MainWindow(object):
         self.findCorners.setObjectName("findCorners")
         self.findCorners.clicked.connect(self.FindCornersClicked)
 
-        self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_5.setGeometry(QtCore.QRect(30, 110, 171, 51))
-        self.pushButton_5.setObjectName("pushButton_5")
+        self.findIntrinsic = QtWidgets.QPushButton(self.groupBox_2)
+        self.findIntrinsic.setGeometry(QtCore.QRect(30, 110, 171, 51))
+        self.findIntrinsic.setObjectName("findIntrinsic")
+        self.findIntrinsic.clicked.connect(self.FindIntrinsicClicked)
+
         self.groupBox_3 = QtWidgets.QGroupBox(self.groupBox_2)
         self.groupBox_3.setGeometry(QtCore.QRect(10, 180, 211, 131))
         self.groupBox_3.setObjectName("groupBox_3")
-        self.pushButton_6 = QtWidgets.QPushButton(self.groupBox_3)
-        self.pushButton_6.setGeometry(QtCore.QRect(20, 70, 171, 51))
-        self.pushButton_6.setObjectName("pushButton_6")
+
+        self.findExtrinsic = QtWidgets.QPushButton(self.groupBox_3)
+        self.findExtrinsic.setGeometry(QtCore.QRect(20, 70, 171, 51))
+        self.findExtrinsic.setObjectName("findExtrinsic")
+
         self.comboBox = QtWidgets.QComboBox(self.groupBox_3)
         self.comboBox.setGeometry(QtCore.QRect(50, 30, 111, 31))
         self.comboBox.setObjectName("comboBox")
@@ -125,9 +129,9 @@ class Ui_MainWindow(object):
 
         self.findCorners.setText(_translate("MainWindow", "1.1 Find Corners"))
 
-        self.pushButton_5.setText(_translate("MainWindow", "1.2 Find Intrinsic"))
+        self.findIntrinsic.setText(_translate("MainWindow", "1.2 Find Intrinsic"))
         self.groupBox_3.setTitle(_translate("MainWindow", "1.3 Find Extrinsic"))
-        self.pushButton_6.setText(_translate("MainWindow", "1.3 Find Extrinsic"))
+        self.findExtrinsic.setText(_translate("MainWindow", "1.3 Find Extrinsic"))
         self.comboBox.setItemText(0, _translate("MainWindow", "1"))
         self.comboBox.setItemText(1, _translate("MainWindow", "2"))
         self.comboBox.setItemText(2, _translate("MainWindow", "3"))
@@ -157,3 +161,6 @@ class Ui_MainWindow(object):
 
     def FindCornersClicked(self):
         self.cameraCalibration.FindCorners()
+
+    def FindIntrinsicClicked(self):
+        self.cameraCalibration.FindIntrinsic()
