@@ -84,9 +84,11 @@ class Ui_MainWindow(object):
         self.findDistortion.setObjectName("findDistortion")
         self.findDistortion.clicked.connect(self.FindDistortionClicked)
 
-        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox_2)
-        self.pushButton_8.setGeometry(QtCore.QRect(30, 400, 171, 51))
-        self.pushButton_8.setObjectName("pushButton_8")
+        self.showResult = QtWidgets.QPushButton(self.groupBox_2)
+        self.showResult.setGeometry(QtCore.QRect(30, 400, 171, 51))
+        self.showResult.setObjectName("showResult")
+        self.showResult.clicked.connect(self.ShowResultClicked)
+
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(520, 40, 231, 461))
         self.groupBox_4.setObjectName("groupBox_4")
@@ -148,7 +150,7 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(13, _translate("MainWindow", "14"))
         self.comboBox.setItemText(14, _translate("MainWindow", "15"))
         self.findDistortion.setText(_translate("MainWindow", "1.4 Find Distortion"))
-        self.pushButton_8.setText(_translate("MainWindow", "1.5 Show Result"))
+        self.showResult.setText(_translate("MainWindow", "1.5 Show Result"))
         self.groupBox_4.setTitle(_translate("MainWindow", "2. Augmented Reality"))
         self.pushButton_12.setText(_translate("MainWindow", "2.1 Show Words on Board"))
         self.pushButton_13.setText(_translate("MainWindow", "2.2 Show Words Vertically"))
@@ -170,3 +172,6 @@ class Ui_MainWindow(object):
 
     def FindDistortionClicked(self):
         self.cameraCalibration.FindDistortion()
+
+    def ShowResultClicked(self):
+        self.cameraCalibration.ShowResult()

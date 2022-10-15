@@ -1,6 +1,7 @@
 import cv2
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 class CameraCalibration():
 
@@ -68,7 +69,39 @@ class CameraCalibration():
     def FindDistortion(self):
         print('Distortion:')
         print(self.dist)
+    
+    def ShowResult(self):
+        dirs = os.listdir(self.folderPath)
+        dirs.sort(key=len)
+        img = cv2.imread(self.folderPath+'/'+dirs[0])
 
+        h, w = img.shape[:2]
+        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(self.intrinsicMatrix, self.dist, (w,h), 1, (w,h))
+
+        # undistort
+        dst = cv2.undistort(img, self.intrinsicMatrix, self.dist, None, newcameramtx)
+
+        # crop the image
+        #x, y, w, h = roi
+        #dst = dst[y:y+h, x:x+w]
+
+        #dst = cv2.resize(dst, (800,600), interpolation=cv2.INTER_AREA)
+        #img = cv2.resize(img, (800,600), interpolation=cv2.INTER_AREA)
+
+        title = 'Distorted image'
+        plt.subplot(1, 2, 1)
+        plt.imshow(img)
+        plt.title(title, fontsize=8)
+        plt.xticks([])
+        plt.yticks([])
+
+        title = 'Undistorted image'
+        plt.subplot(1, 2, 2)
+        plt.imshow(dst)
+        plt.title(title, fontsize=8)
+        plt.xticks([])
+        plt.yticks([])
+        plt.show()
 
 
 # reference
