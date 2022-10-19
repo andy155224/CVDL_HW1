@@ -12,12 +12,14 @@ import sys
 
 from CameraCalibration import *
 from AugmentedReality import *
+from StereoDisparityMap import *
 
 class Ui_MainWindow(object):
 
     def __init__(self):
         self.cameraCalibration = CameraCalibration()
         self.augmentedReality = AugmentedReality()
+        self.stereoDisparityMap = StereoDisparityMap()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -33,12 +35,16 @@ class Ui_MainWindow(object):
         self.loadFolder.setObjectName("loadFolder")
         self.loadFolder.clicked.connect(self.LoadFolderClicked)
 
-        self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_2.setGeometry(QtCore.QRect(30, 210, 171, 51))
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_3.setGeometry(QtCore.QRect(30, 330, 171, 51))
-        self.pushButton_3.setObjectName("pushButton_3")
+        self.loadImageL = QtWidgets.QPushButton(self.groupBox)
+        self.loadImageL.setGeometry(QtCore.QRect(30, 210, 171, 51))
+        self.loadImageL.setObjectName("loadImageL")
+        self.loadImageL.clicked.connect(self.LoadImageLClicked)
+
+        self.loadImageR = QtWidgets.QPushButton(self.groupBox)
+        self.loadImageR.setGeometry(QtCore.QRect(30, 330, 171, 51))
+        self.loadImageR.setObjectName("loadImageR")
+        self.loadImageR.clicked.connect(self.LoadImageRClicked)
+
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(270, 40, 231, 461))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -114,10 +120,14 @@ class Ui_MainWindow(object):
         self.groupBox_6 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_6.setGeometry(QtCore.QRect(770, 40, 231, 461))
         self.groupBox_6.setObjectName("groupBox_6")
-        self.pushButton_14 = QtWidgets.QPushButton(self.groupBox_6)
-        self.pushButton_14.setGeometry(QtCore.QRect(30, 200, 171, 51))
-        self.pushButton_14.setStyleSheet("font: 10pt \"Ubuntu\";")
-        self.pushButton_14.setObjectName("pushButton_14")
+
+        self.stereo_Disparity_Map = QtWidgets.QPushButton(self.groupBox_6)
+        self.stereo_Disparity_Map.setGeometry(QtCore.QRect(30, 200, 171, 51))
+        self.stereo_Disparity_Map.setStyleSheet("font: 10pt \"Ubuntu\";")
+        self.stereo_Disparity_Map.setObjectName("stereo_Disparity_Map")
+        self.stereo_Disparity_Map.clicked.connect(self.StereoDisparityMapClicked)
+
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1022, 22))
@@ -135,8 +145,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "CVDL_HW1"))
         self.groupBox.setTitle(_translate("MainWindow", "Load Image"))
         self.loadFolder.setText(_translate("MainWindow", "Load Folder"))
-        self.pushButton_2.setText(_translate("MainWindow", "Load Image_L"))
-        self.pushButton_3.setText(_translate("MainWindow", "Load Image_R"))
+        self.loadImageL.setText(_translate("MainWindow", "Load Image_L"))
+        self.loadImageR.setText(_translate("MainWindow", "Load Image_R"))
         self.groupBox_2.setTitle(_translate("MainWindow", "1. Calibration"))
         self.findCorners.setText(_translate("MainWindow", "1.1 Find Corners"))
         self.findIntrinsic.setText(_translate("MainWindow", "1.2 Find Intrinsic"))
@@ -163,12 +173,20 @@ class Ui_MainWindow(object):
         self.showWordsOnBoard.setText(_translate("MainWindow", "2.1 Show Words on Board"))
         self.showWordsVertically.setText(_translate("MainWindow", "2.2 Show Words Vertically"))
         self.groupBox_6.setTitle(_translate("MainWindow", "3. Stereo Disparity Map"))
-        self.pushButton_14.setText(_translate("MainWindow", "3.1 Stereo Disparity Map"))
+        self.stereo_Disparity_Map.setText(_translate("MainWindow", "3.1 Stereo Disparity Map"))
 
     def LoadFolderClicked(self):
         folder_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Load folder", "./")
         self.cameraCalibration.LoadFolder(folder_path)
         self.augmentedReality.LoadFolder(folder_path)
+
+    def LoadImageLClicked(self):
+        fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'OpenFile', './')
+        self.stereoDisparityMap.SetImgPath(fileName[0], 0)
+
+    def LoadImageRClicked(self):
+        fileName = QtWidgets.QFileDialog.getOpenFileName(None, 'OpenFile', './')
+        self.stereoDisparityMap.SetImgPath(fileName[0], 1)
 
     def FindCornersClicked(self):
         self.cameraCalibration.FindCorners()
@@ -196,3 +214,6 @@ class Ui_MainWindow(object):
     def ShowWordsVerticallyClicked(self):
         word = self.GetText()
         self.augmentedReality.ShowWordsVertically(word)
+
+    def StereoDisparityMapClicked(self):
+        self.stereoDisparityMap.Execute()
