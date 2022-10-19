@@ -11,11 +11,13 @@ import os
 import sys
 
 from CameraCalibration import *
+from AugmentedReality import *
 
 class Ui_MainWindow(object):
 
     def __init__(self):
         self.cameraCalibration = CameraCalibration()
+        self.augmentedReality = AugmentedReality()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -92,17 +94,23 @@ class Ui_MainWindow(object):
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(520, 40, 231, 461))
         self.groupBox_4.setObjectName("groupBox_4")
-        self.pushButton_12 = QtWidgets.QPushButton(self.groupBox_4)
-        self.pushButton_12.setGeometry(QtCore.QRect(30, 200, 171, 51))
-        self.pushButton_12.setStyleSheet("font: 10pt \"Ubuntu\";")
-        self.pushButton_12.setObjectName("pushButton_12")
-        self.pushButton_13 = QtWidgets.QPushButton(self.groupBox_4)
-        self.pushButton_13.setGeometry(QtCore.QRect(30, 330, 171, 51))
-        self.pushButton_13.setStyleSheet("font: 10pt \"Ubuntu\";")
-        self.pushButton_13.setObjectName("pushButton_13")
+
+        self.showWordsOnBoard = QtWidgets.QPushButton(self.groupBox_4)
+        self.showWordsOnBoard.setGeometry(QtCore.QRect(30, 200, 171, 51))
+        self.showWordsOnBoard.setStyleSheet("font: 10pt \"Ubuntu\";")
+        self.showWordsOnBoard.setObjectName("showWordsOnBoard")
+        self.showWordsOnBoard.clicked.connect(self.ShowWordsOnBoardClicked)
+
+        self.showWordsVertically = QtWidgets.QPushButton(self.groupBox_4)
+        self.showWordsVertically.setGeometry(QtCore.QRect(30, 330, 171, 51))
+        self.showWordsVertically.setStyleSheet("font: 10pt \"Ubuntu\";")
+        self.showWordsVertically.setObjectName("showWordsVertically")
+        self.showWordsVertically.clicked.connect(self.ShowWordsVerticallyClicked)
+
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox_4)
         self.lineEdit.setGeometry(QtCore.QRect(40, 80, 151, 41))
         self.lineEdit.setObjectName("lineEdit")
+
         self.groupBox_6 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_6.setGeometry(QtCore.QRect(770, 40, 231, 461))
         self.groupBox_6.setObjectName("groupBox_6")
@@ -152,14 +160,15 @@ class Ui_MainWindow(object):
         self.findDistortion.setText(_translate("MainWindow", "1.4 Find Distortion"))
         self.showResult.setText(_translate("MainWindow", "1.5 Show Result"))
         self.groupBox_4.setTitle(_translate("MainWindow", "2. Augmented Reality"))
-        self.pushButton_12.setText(_translate("MainWindow", "2.1 Show Words on Board"))
-        self.pushButton_13.setText(_translate("MainWindow", "2.2 Show Words Vertically"))
+        self.showWordsOnBoard.setText(_translate("MainWindow", "2.1 Show Words on Board"))
+        self.showWordsVertically.setText(_translate("MainWindow", "2.2 Show Words Vertically"))
         self.groupBox_6.setTitle(_translate("MainWindow", "3. Stereo Disparity Map"))
         self.pushButton_14.setText(_translate("MainWindow", "3.1 Stereo Disparity Map"))
 
     def LoadFolderClicked(self):
         folder_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Load folder", "./")
         self.cameraCalibration.LoadFolder(folder_path)
+        self.augmentedReality.LoadFolder(folder_path)
 
     def FindCornersClicked(self):
         self.cameraCalibration.FindCorners()
@@ -175,3 +184,15 @@ class Ui_MainWindow(object):
 
     def ShowResultClicked(self):
         self.cameraCalibration.ShowResult()
+
+    def GetText(self):
+        word = self.lineEdit.text()
+        return word.upper()
+    
+    def ShowWordsOnBoardClicked(self):
+        word = self.GetText()
+        self.augmentedReality.ShowWordsOnBoard(word)
+
+    def ShowWordsVerticallyClicked(self):
+        word = self.GetText()
+        self.augmentedReality.ShowWordsVertically(word)
